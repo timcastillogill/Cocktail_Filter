@@ -5,6 +5,6 @@ describe("CocktailQuery", () => {
     const cocktailRepository = new CocktailRepository();
 
     const data = await cocktailRepository.getByName("margarita");
-    expect(data).toHaveProperty("strDrink");
+    expect(data).toHaveProperty("drinks");
   });
 });

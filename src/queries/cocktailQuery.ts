@@ -3,7 +3,11 @@ import { CocktailRepository } from "../repositories/cocktailRepository";
 export function cocktailQuery(cocktailRepository: CocktailRepository) {
   return {
     getCocktail: (name: string) => {
-      return cocktailRepository.getByName(name);
+      const cocktailData = cocktailRepository.getByName(name);
+      if (cocktailData === null) {
+        return "Cocktail not found";
+      }
+      return cocktailData;
     }
   };
 }
