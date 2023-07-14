@@ -26,15 +26,6 @@ describe("CocktailQuery", () => {
 
       expect(cocktailQuery.getAllCocktails("margarita")).toEqual(margarita);
     });
-
-    //TODO: TEST FOR DRINKS: NULL AND THE RETURN MESSAGE
-
-    it("should return an error when the cocktail can't be found", () => {
-      const noCocktail: Promise<object> = Promise.resolve({
-        drinks: null
-      });
-      mockCocktailRepository.getByName.mockReturnValue(noCocktail);
-    });
   });
 
   describe("getOneCocktail", () => {
@@ -89,6 +80,16 @@ describe("CocktailQuery", () => {
 
       const cocktail = cocktailQuery.getCocktail("margarita");
       expect(cocktail).toEqual(margarita);
+    });
+    it("should return an error when the cocktail can't be found", () => {
+      const noCocktail: Promise<object> = Promise.resolve({
+        drinks: null
+      });
+      mockCocktailRepository.getByName.mockReturnValue(noCocktail);
+
+      expect(cocktailQuery.getCocktail("blahblah")).toEqual(
+        "Cocktail not found"
+      );
     });
   });
 });
