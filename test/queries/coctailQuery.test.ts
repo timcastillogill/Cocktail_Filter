@@ -13,7 +13,7 @@ describe("CocktailQuery", () => {
   });
 
   describe("getAllMatchingCocktails", () => {
-    it.skip("should return the full JSON of the cocktail 'Margarita'", () => {
+    it("should return the full JSON of the cocktail 'Margarita'", () => {
       const margarita: Promise<object> = Promise.resolve({
         drinks: [
           {

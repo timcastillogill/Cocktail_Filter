@@ -49,7 +49,6 @@ class CocktailQuery {
         });
       }
     }
-    console.log("IN GETCOCKTAIL: ", returnCocktailJSON);
     return returnCocktailJSON;
   }
 }
