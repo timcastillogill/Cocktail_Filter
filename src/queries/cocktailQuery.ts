@@ -18,22 +18,19 @@ class CocktailQuery {
     await this.getAllCocktails(name);
 
     if (
-      this.allMatchingCocktails === null ||
-      !Array.isArray(this.allMatchingCocktails)
+      "drinks" in this.allMatchingCocktails &&
+      this.allMatchingCocktails.drinks === null
     ) {
       return "Cocktail not found";
     }
+    return this.createCocktailJSON();
+  }
 
+  private createCocktailJSON() {
     const firstCocktail = (
       this.allMatchingCocktails as unknown as { drinks: Cocktail[] }
     ).drinks[0];
 
-    const returnCocktailJSON: ReturnCocktail =
-      this.createCocktailJSON(firstCocktail);
-    return returnCocktailJSON;
-  }
-
-  private createCocktailJSON(firstCocktail: Cocktail) {
     const returnCocktailJSON: ReturnCocktail = {
       id: firstCocktail.idDrink,
       name: firstCocktail.strDrink,
@@ -60,6 +57,7 @@ class CocktailQuery {
         });
       }
     }
+
     return returnCocktailJSON;
   }
 }

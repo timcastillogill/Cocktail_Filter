@@ -1,9 +1,9 @@
 import { mock } from "jest-mock-extended";
 import { CocktailRepository } from "../../src/repositories/cocktailRepository";
 import CocktailQuery from "../../src/queries/cocktailQuery";
-import { Cocktail } from "../../src/model/Cocktail";
+import { ReturnCocktail } from "../../src/model/Cocktail";
 
-const SOME_ID = 1;
+const SOME_ID = "1";
 
 describe("CocktailQuery", () => {
   const mockCocktailRepository = mock<CocktailRepository>();
@@ -30,7 +30,7 @@ describe("CocktailQuery", () => {
   });
 
   describe("getOneCocktail", () => {
-    it("return the JSON for the first cocktail in the array", () => {
+    it("return the JSON for the first cocktail in the array", async () => {
       const margarita: Promise<object> = Promise.resolve({
         drinks: [
           {
@@ -78,10 +78,42 @@ describe("CocktailQuery", () => {
         ]
       });
 
-      mockCocktailRepository.getByName.mockReturnValue(margarita);
+      const newMargaritaJSON: ReturnCocktail = {
+        id: SOME_ID,
+        name: "Margarita",
+        category: "Ordinary Drink",
+        alcoholic: "Alcoholic",
+        glass: "Cocktail glass",
+        instructions:
+          "Rub the rim of the glass with the lime slice to make the salt stick to it. Take care to moisten only the outer rim and sprinkle the salt on it. The salt should present to the lips of the imbiber and never mix into the cocktail. Shake the other ingredients with ice, then carefully pour into the glass.",
+        thumbnail:
+          "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg",
+        ingredients: [
+          {
+            ingredientName: "Tequila",
+            ingredientMeasure: "1 1/2 oz "
+          },
+          {
+            ingredientName: "Blue Curacao",
+            ingredientMeasure: "1 oz "
+          },
+          {
+            ingredientName: "Lime juice",
+            ingredientMeasure: "1 oz "
+          },
+          {
+            ingredientName: "Salt",
+            ingredientMeasure: "Coarse "
+          }
+        ],
+        dateModified: "2015-08-18 14:42:59"
+      };
 
-      const cocktail = cocktailQuery.getCocktail("margarita");
-      expect(cocktail).toEqual(margarita);
+      mockCocktailRepository.getByName.mockResolvedValue(margarita);
+
+      const cocktail = await cocktailQuery.getCocktail("margarita");
+
+      expect(cocktail).toEqual(newMargaritaJSON);
     });
 
     test('should return "Cocktail not found" when drinks is null', async () => {
