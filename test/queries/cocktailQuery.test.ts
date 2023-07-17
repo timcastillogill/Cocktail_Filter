@@ -85,7 +85,6 @@ describe("CocktailQuery", () => {
     });
 
     test('should return "Cocktail not found" when drinks is null', async () => {
-      // Arrange
       const mockCocktailRepository = new CocktailRepository();
       jest
         .spyOn(mockCocktailRepository, "getByName")
@@ -93,10 +92,8 @@ describe("CocktailQuery", () => {
 
       const cocktailQuery = new CocktailQuery(mockCocktailRepository);
 
-      // Act
       const result = await cocktailQuery.getCocktail("margarita");
 
-      // Assert
       expect(result).toBe("Cocktail not found");
     });
   });
