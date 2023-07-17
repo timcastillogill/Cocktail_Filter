@@ -1,4 +1,4 @@
-export class CocktailRepository {
+export class CocktailRepository implements IGetCocktail {
   getByName = async (cocktailName: string): Promise<object> => {
     const url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${cocktailName}`;
 
