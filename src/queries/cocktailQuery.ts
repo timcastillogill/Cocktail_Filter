@@ -3,7 +3,7 @@ import { Cocktail, ReturnCocktail } from "../model/Cocktail";
 
 class CocktailQuery {
   cocktailRepository: CocktailRepository;
-  allMatchingCocktails: Cocktail | object;
+  allMatchingCocktails: Cocktail[] | object;
 
   constructor(cocktailRepository: CocktailRepository) {
     this.cocktailRepository = cocktailRepository;
@@ -12,17 +12,28 @@ class CocktailQuery {
 
   async getAllCocktails(name: string) {
     this.allMatchingCocktails = await this.cocktailRepository.getByName(name);
-    if (!("drinks" in this.allMatchingCocktails)) {
-      return "Cocktail not found";
-    }
   }
 
   async getCocktail(name: string) {
     await this.getAllCocktails(name);
 
-    const firstCocktail = (this.allMatchingCocktails as { drinks: Cocktail[] })
-      .drinks[0];
+    if (
+      this.allMatchingCocktails === null ||
+      !Array.isArray(this.allMatchingCocktails)
+    ) {
+      return "Cocktail not found";
+    }
 
+    const firstCocktail = (
+      this.allMatchingCocktails as unknown as { drinks: Cocktail[] }
+    ).drinks[0];
+
+    const returnCocktailJSON: ReturnCocktail =
+      this.createCocktailJSON(firstCocktail);
+    return returnCocktailJSON;
+  }
+
+  private createCocktailJSON(firstCocktail: Cocktail) {
     const returnCocktailJSON: ReturnCocktail = {
       id: firstCocktail.idDrink,
       name: firstCocktail.strDrink,

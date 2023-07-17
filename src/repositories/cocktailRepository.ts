@@ -5,7 +5,8 @@ export class CocktailRepository {
     try {
       const response = await fetch(url);
       const data = await response.json();
-      return data;
+
+      return data.drinks;
     } catch (error) {
       console.error(`Error capturing data for ${cocktailName}: ${error}`);
       throw Error;

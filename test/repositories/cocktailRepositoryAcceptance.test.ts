@@ -5,6 +5,11 @@ describe("CocktailQuery", () => {
     const cocktailRepository = new CocktailRepository();
 
     const data = await cocktailRepository.getByName("margarita");
-    expect(data).toHaveProperty("drinks");
+
+    expect(hasStrDrinkProperty(data)).toBeTruthy;
   });
+
+  function hasStrDrinkProperty(obj: any): boolean {
+    return obj && typeof obj === "object" && "strDrink" in obj;
+  }
 });

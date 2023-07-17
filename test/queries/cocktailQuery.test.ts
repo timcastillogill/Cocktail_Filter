@@ -1,6 +1,7 @@
 import { mock } from "jest-mock-extended";
 import { CocktailRepository } from "../../src/repositories/cocktailRepository";
 import CocktailQuery from "../../src/queries/cocktailQuery";
+import { Cocktail } from "../../src/model/Cocktail";
 
 const SOME_ID = 1;
 
@@ -76,20 +77,27 @@ describe("CocktailQuery", () => {
           }
         ]
       });
+
       mockCocktailRepository.getByName.mockReturnValue(margarita);
 
       const cocktail = cocktailQuery.getCocktail("margarita");
       expect(cocktail).toEqual(margarita);
     });
-    it("should return an error when the cocktail can't be found", () => {
-      const noCocktail: Promise<object> = Promise.resolve({
-        drinks: null
-      });
-      mockCocktailRepository.getByName.mockReturnValue(noCocktail);
 
-      expect(cocktailQuery.getCocktail("blahblah")).toEqual(
-        "Cocktail not found"
-      );
+    test('should return "Cocktail not found" when drinks is null', async () => {
+      // Arrange
+      const mockCocktailRepository = new CocktailRepository();
+      jest
+        .spyOn(mockCocktailRepository, "getByName")
+        .mockResolvedValue({ drinks: null });
+
+      const cocktailQuery = new CocktailQuery(mockCocktailRepository);
+
+      // Act
+      const result = await cocktailQuery.getCocktail("margarita");
+
+      // Assert
+      expect(result).toBe("Cocktail not found");
     });
   });
 });
